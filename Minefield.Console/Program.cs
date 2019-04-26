@@ -6,7 +6,14 @@ namespace Minefield.Console
     {
         static void Main(string[] args)
         {
+            System.Console.Clear();
+
+            var color = System.Console.ForegroundColor;
+
+            System.Console.ForegroundColor = ConsoleColor.DarkRed;
             System.Console.WriteLine(RenderBoard());
+
+            System.Console.ForegroundColor = color;
 
             //System.Console.ReadLine();
 

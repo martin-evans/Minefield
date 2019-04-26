@@ -1,0 +1,25 @@
+Ideas:
+	1. Re-render the output on each turn by the player (Console.Clear())
+	2. GAME_STATE held in state machine, passed to UIRenderingService to display UI.
+	3. Input from user captured, validated and processed by the RULES_ENGINE which updates the GAME_STATE
+	4. Updates to game state causes a re-render 
+	
+States: Ready for Input
+	Displaying Messa	
+
+Inputs:
+	R to reset
+	X to exit
+	Arrows to move
+	
+
+On moving position, display new position then process based on wether mine has been hit
+
+If ran out of lives, display message to that effect and prompt for Reset or Exit
+
+GameStates:
+	Starting
+	ReadyForInput
+	ProcessingMove
+	Over	
+		
