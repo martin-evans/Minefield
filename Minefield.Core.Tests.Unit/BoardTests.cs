@@ -3,14 +3,28 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Minefield.Core.Tests.Unit
 {
     [TestClass]
-    public class BoardTests{
+    public class TheGameBoard{
 
         [TestMethod]
-        public void BoardConstructed_With_8x8_Grid(){
+        public void ConsistsOf_An8x8Grid(){
 
             var board = new Board();
             Assert.AreEqual(8, board.Rows);
             Assert.AreEqual(8, board.Columns);
+
+        }
+
+
+         [TestMethod]
+        public void ConsistsOf_10RandomlyPlacedMines(){
+
+            var board = new Board();
+            
+            Assert.AreEqual(10, board.Mines.Length);
+
+            foreach(var location in board.Mines){
+                System.Console.WriteLine($"{location.Column}{location.Row}");
+            }
 
 
         }
