@@ -3,15 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Minefield.Core.Tests.Unit
 {
     [TestClass]
-    public class OnStartingTheGame
-    {
-        private Game _theGame;
-
-        [TestInitialize]
-        public void SetUp(){
-            
-            _theGame = new Core.Game();
-        }
+    public class OnStartingTheGame : GameTests
+{
 
         [TestMethod]
         public void A_Board_Exists_Of_8x8()
@@ -35,37 +28,7 @@ namespace Minefield.Core.Tests.Unit
 
         }
 
-        [TestMethod]
-        public void The_Player_MayMovePosition_OnTheBoard()
-        {    
-
-            var currentPlayerPosition = _theGame.Player.Position;
-
-            _theGame.MovePlayer(Direction.Right);
-
-            var newPlayerPosition = _theGame.Player.Position;
-
-            Assert.AreNotEqual(currentPlayerPosition, newPlayerPosition);
-
-        }
-
-        [TestMethod]
-        public void Attempting_AnInvalidMove_WillBeIgnored()
-        {
-
-            var currentPlayerPosition = _theGame.Player.Position;
-
-            Assert.IsTrue(currentPlayerPosition == _theGame.Board.StartPosition());
-
-            // illegal move when at A1
-            _theGame.MovePlayer(Direction.Down);
-
-            var newPlayerPosition = _theGame.Player.Position;
-
-            Assert.AreSame(currentPlayerPosition, newPlayerPosition);
-
-        }
-
+       
         [TestMethod]
         public void The_Player_HasThreeLives() {
 
@@ -73,20 +36,13 @@ namespace Minefield.Core.Tests.Unit
 
         }
 
-        /* Game starts with score of 0 (AKA "Moves Taken") */
+        [TestMethod]
+        public void The_Player_HasAScoreOf_Zero() {
 
-        /* Each time a player moves the score is incremented */        
+            Assert.AreEqual(0, _theGame.Player.Score);
 
-        /* Player getting to the end of the board means the player wins */
-
-        /* Player hitting a mine detonates the mine */          
-        
-        /* Player hitting a mine looses a life */
-
-        /* Player looses all lives leads to Game Over */
-
-        /* Game Over allows player to restart */
+        }    
 
     }
-    
+
 }

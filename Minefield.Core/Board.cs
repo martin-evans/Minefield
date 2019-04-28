@@ -10,9 +10,9 @@ namespace Minefield.Core {
 
         public Position[] Squares { get; set; }
 
-        public Position[] Mines { get; private set; }
+        public Position[] Mines { get; internal set; }
 
-        private Position Position (string col, int row) {
+        internal Position Position (string col, int row) {
 
             return Squares.ToList ().First (x => x.Column == col && x.Row == row);
         }
@@ -21,9 +21,9 @@ namespace Minefield.Core {
             return Position ("A", 1);
         }
 
-        private List<string> ColumnNames;
+        public List<string> ColumnNames { get; private set; }
 
-        public Board () {
+        public Board (IMineLayingStrategy strategy = null) {
 
             ColumnNames = "A,B,C,D,E,F,G,H"
                 .Split (new [] { "," }, StringSplitOptions.RemoveEmptyEntries)
@@ -40,7 +40,17 @@ namespace Minefield.Core {
 
             Squares = lst.ToArray ();
 
-            LayMinesOnTheBoard ();
+            LayMinesOnTheBoard (strategy);
+
+        }
+
+        private void LayMinesOnTheBoard (IMineLayingStrategy strategy = null) {
+
+            if (strategy == null) {
+                strategy = new LayRandomMines ();
+            }
+
+            strategy.Lay (this);
 
         }
 
@@ -90,35 +100,6 @@ namespace Minefield.Core {
             }
 
             return Position (newColumn, newRow);
-
-        }
-
-        private void LayMinesOnTheBoard () {
-
-            var rnd = new System.Random();
-
-            Mines = new Position[10];
-            
-            int columnIndex;
-            int rowIndex;
-            
-
-            for(var i = 0; i < Mines.Length; i++){
-                                              
-                do {
-                    
-                    columnIndex = rnd.Next(1, ColumnNames.Count);
-                    rowIndex = rnd.Next(1, ColumnNames.Count);
-
-                    var position = Position(ColumnNames[columnIndex], rowIndex);
-
-                    if(!Mines.Contains(position) && position != StartPosition()){
-                       Mines[i] = position;    
-                    }
-
-                } while (Mines[i] == null);
-
-            }
 
         }
 
