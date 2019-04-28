@@ -14,7 +14,6 @@ namespace Minefield.Core.Tests.Unit
 
         }
 
-
          [TestMethod]
         public void ConsistsOf_10RandomlyPlacedMines(){
 
@@ -25,7 +24,6 @@ namespace Minefield.Core.Tests.Unit
             foreach(var location in board.Mines){
                 System.Console.WriteLine($"{location.Column}{location.Row}");
             }
-
 
         }
 
