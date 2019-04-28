@@ -46,7 +46,7 @@ namespace Minefield.Core.Tests.Unit {
         public void WhenThePlayerHitsAMine_ThePlayerLoosesALife () {
 
             // player moving anywhere will stand on a mine       
-            _theGame = new Game(new GameSettings(){ MineLayingStrategy = new SaturateBoardWithMinesStrategy()});            
+            _theGame = new Game(GameSettings.MinesEverywhere());            
             
             var currentLives = _theGame.Player.Lives;
 
@@ -57,10 +57,10 @@ namespace Minefield.Core.Tests.Unit {
         }
 
         [TestMethod]
-        public void WhenThePlayerLoosesAllLIves_TheGameIsOver () {
+        public void WhenThePlayerLoosesAllLives_TheGameIsOver () {
 
             // player moving anywhere will stand on a mine            
-            _theGame = new Game(new GameSettings(){ MineLayingStrategy = new SaturateBoardWithMinesStrategy(), NumberOfLives = 1});  
+            _theGame = new Game(GameSettings.MinesEverywhere(lives:1));  
 
             _theGame.MovePlayer (Direction.Right);
 
@@ -72,10 +72,30 @@ namespace Minefield.Core.Tests.Unit {
         
 
         [TestMethod]
+        public void WhenTheGameIsOver_AllPlayerMovesAreIgnored()
+        {
+                        
+            
+            // starting a game with 0 lives defines the game as being already over
+            _theGame = new Game(new GameSettings(){ NumberOfLives = 0});
+
+            
+            var currentPlayerPosition = _theGame.Player.Position;            
+            
+            _theGame.MovePlayer(Direction.Right);
+            
+            var newPlayerPosition = _theGame.Player.Position;
+
+            Assert.AreEqual(currentPlayerPosition, newPlayerPosition);
+
+
+        }
+
+        [TestMethod]
         public void RestartingGame_ResetsGame () {
 
             // player moving anywhere will stand on a mine            
-            _theGame = new Game(new GameSettings(){ MineLayingStrategy = new SaturateBoardWithMinesStrategy(), NumberOfLives = 4});
+            _theGame = new Game(GameSettings.MinesEverywhere());
 
             _theGame.MovePlayer (Direction.Right);
 

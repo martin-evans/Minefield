@@ -12,13 +12,12 @@ namespace Minefield.Core
         public Game (GameSettings settings = null) {
             
             if(settings == null) {
-                settings = new DefaultGameSettings();
+                settings = GameSettings.Default();
             }
             
             _settings = settings;
 
             InitialiseTheGame();
-
             
         }
         
@@ -34,6 +33,9 @@ namespace Minefield.Core
         }
 
         public void MovePlayer(Direction direction){            
+
+            if(IsOver())
+            return;
 
             Player.Position = Board.NewPositionRelativeTo(direction, from: Player.Position);
                                     
@@ -71,22 +73,5 @@ namespace Minefield.Core
         {
             InitialiseTheGame();
         }
-    }
-
-    public class GameSettings{
-
-        public int NumberOfLives { get; set; }
-
-        public IMineLayingStrategy MineLayingStrategy { get; set; }
-
-    }
-
-    public class DefaultGameSettings : GameSettings {
-        public DefaultGameSettings()
-        {
-            NumberOfLives = 3;
-            MineLayingStrategy = new LayRandomMines();
-        }
-    }
-
+    }      
 }
