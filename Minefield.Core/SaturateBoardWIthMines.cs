@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Minefield.Core
 
 {
@@ -6,9 +8,7 @@ namespace Minefield.Core
         public void Lay(Board board)
         {
             
-            board.Mines = board.Squares;
-
-
+            board.Mines = board.Squares.ToList().Select(pos=> Mine.Lay(at:pos)).ToArray();
         }
     }
 }

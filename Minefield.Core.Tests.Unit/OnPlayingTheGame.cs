@@ -7,14 +7,14 @@ namespace Minefield.Core.Tests.Unit
     {
         
          [TestMethod]
-        public void The_Player_MayMovePosition_OnTheBoard()
+        public void The_Player_MayMoveAround_TheBoard()
         {    
 
-            var currentPlayerPosition = _theGame.Player.Position;
+            var currentPlayerPosition = _theGame.Player.Position.ToString();
 
             _theGame.MovePlayer(Direction.Right);
 
-            var newPlayerPosition = _theGame.Player.Position;
+            var newPlayerPosition = _theGame.Player.Position.ToString();
 
             Assert.AreNotEqual(currentPlayerPosition, newPlayerPosition);
 
@@ -26,7 +26,7 @@ namespace Minefield.Core.Tests.Unit
 
             var currentPlayerPosition = _theGame.Player.Position;
 
-            Assert.IsTrue(currentPlayerPosition == _theGame.Board.StartPosition());
+            Assert.IsTrue(currentPlayerPosition.IsAt(_theGame.Board.StartPosition()));
 
             // illegal move when at A1
             _theGame.MovePlayer(Direction.Down);
@@ -38,7 +38,4 @@ namespace Minefield.Core.Tests.Unit
         }         
 
     }
-
-
-    
 }

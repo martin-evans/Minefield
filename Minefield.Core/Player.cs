@@ -1,14 +1,17 @@
-using System;
 
 namespace Minefield.Core {
-    public class Player {
+    public class Player : Position {
 
-        public Position Position { get; set; }
         public int Lives { get; private set; }
+
         public int Score { get; private set; }
 
-        public Player(int lives)
+        public Position Position { get { return this;} }
+
+        public Player(int lives, Position at)
         {
+            Column = at.Column;
+            Row = at.Row;
             Lives = lives;
         }
 
@@ -21,6 +24,7 @@ namespace Minefield.Core {
         {
             Lives = Lives-1;
         }
+        
     }
 
 }

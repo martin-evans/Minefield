@@ -1,0 +1,17 @@
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/bin/Debug/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/bin/Debug/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/bin/Debug/netcoreapp2.1/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/bin/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.deps.json
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/bin/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.runtimeconfig.json
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/bin/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.runtimeconfig.dev.json
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/bin/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.dll
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/bin/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.pdb
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/bin/Debug/netcoreapp2.1/Minefield.Core.dll
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/bin/Debug/netcoreapp2.1/Minefield.Core.pdb
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/obj/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.csprojAssemblyReference.cache
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/obj/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.csproj.CoreCompileInputs.cache
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/obj/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.AssemblyInfoInputs.cache
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/obj/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.AssemblyInfo.cs
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/obj/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.csproj.CopyComplete
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/obj/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.dll
+/Users/martinevans/Projects/Minefield/Minefield.Core.Tests.Unit/obj/Debug/netcoreapp2.1/Minefield.Core.Tests.Unit.pdb

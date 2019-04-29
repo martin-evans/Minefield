@@ -13,6 +13,16 @@ namespace Minefield.Core.Tests.Unit
             Assert.AreEqual(8, _theGame.Board.Columns);
         }
 
+        [TestMethod]
+        public void MinesHave_Been_HiddenOnTheBoard()
+        {
+            foreach (var mine in _theGame.Board.Mines)
+            {
+                Assert.IsTrue(mine.IsHidden());
+            }
+
+        }
+
 
         [TestMethod]
         public void A_PlayerExists()
@@ -24,7 +34,7 @@ namespace Minefield.Core.Tests.Unit
         [TestMethod]
         public void The_Player_IsLocatedAtTheStartPosition_OnTheBoard()
         {
-            Assert.IsTrue(_theGame.Player.Position == _theGame.Board.StartPosition());
+            Assert.IsTrue(_theGame.Player.IsAt( _theGame.Board.StartPosition()));
 
         }
 
@@ -41,7 +51,10 @@ namespace Minefield.Core.Tests.Unit
 
             Assert.AreEqual(0, _theGame.Player.Score);
 
-        }    
+        }
+
+        /* Mines have been layed */
+         
 
     }
 

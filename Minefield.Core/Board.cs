@@ -10,7 +10,7 @@ namespace Minefield.Core {
 
         public Position[] Squares { get; set; }
 
-        public Position[] Mines { get; internal set; }
+        public Mine[] Mines { get; internal set; }
 
         internal Position Position (string col, int row) {
 

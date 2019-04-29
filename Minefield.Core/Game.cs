@@ -4,7 +4,9 @@ using System.Linq;
 namespace Minefield.Core
 {
     public class Game {
+
         public Board Board { get; set; }
+
         public Player Player { get; set; }
 
         private GameSettings _settings;
@@ -23,12 +25,9 @@ namespace Minefield.Core
         
         private void InitialiseTheGame(){
 
-        Board = new Board (strategy: _settings.MineLayingStrategy);
+            Board = new Board (strategy: _settings.MineLayingStrategy);
             
-            Player = new Player(lives:_settings.NumberOfLives)
-            {
-                 Position = Board.StartPosition()
-            };
+            Player = new Player(lives:_settings.NumberOfLives, at: Board.StartPosition());
 
         }
 
@@ -37,26 +36,29 @@ namespace Minefield.Core
             if(IsOver())
             return;
 
-            Player.Position = Board.NewPositionRelativeTo(direction, from: Player.Position);
+            var position =  Board.NewPositionRelativeTo(direction, from: Player);
+
+            Player.MoveTo(position);
                                     
             Player.IncrementMoveCount();
 
-            if(PlayerHasLandedOnMine()){
-                System.Console.WriteLine("BOOM!");
+            var suspectLocation = SuspectLocation();
+
+            if(suspectLocation != null && suspectLocation.IsHidden()){
+                suspectLocation.Boom();
                 Player.LoseALife();
             }
 
         }
 
-        private bool PlayerHasLandedOnMine()
+        private Mine SuspectLocation()
         {
-            return Board.Mines.Contains(Player.Position);
-            
+            return Board.Mines.SingleOrDefault(x => x.ToString() == Player.Position.ToString());            
         }
 
         public bool GameHasBeenWon()
         {
-            return Player.Position.Column == Board.ColumnNames.ToArray()[Board.Columns-1];
+            return Player.Column == Board.ColumnNames.ToArray()[Board.Columns-1];
         }
 
         public bool IsOver()
@@ -66,7 +68,7 @@ namespace Minefield.Core
 
         public bool PlayerIsAtStart()
         {
-            return Player.Position == Board.StartPosition();
+            return Player.IsAt(Board.StartPosition());
         }
 
         public void Restart()

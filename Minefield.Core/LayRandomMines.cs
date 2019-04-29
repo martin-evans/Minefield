@@ -6,7 +6,7 @@ namespace Minefield.Core
         public void Lay (Board board) {
             var rnd = new System.Random ();
 
-            board.Mines = new Position[10];
+            board.Mines = new Mine[10];
 
             int columnIndex;
             int rowIndex;
@@ -21,7 +21,7 @@ namespace Minefield.Core
                     var position = board.Position (board.ColumnNames[columnIndex], rowIndex);
 
                     if (!board.Mines.Contains (position) && position != board.StartPosition ()) {
-                        board.Mines[i] = position;
+                        board.Mines[i] = Mine.Lay(at: position);
                     }
 
                 } while (board.Mines[i] == null);
