@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace Minefield.Core.Tests.Unit
@@ -73,19 +74,10 @@ namespace Minefield.Core.Tests.Unit
 
                     var currentSquare = _theGame.Board.Squares.SingleOrDefault(x => x.Column == colName && x.Row == row);
 
-                    if(currentSquare == null)
-                    {
-                        System.Console.WriteLine($"{colName}{row} is invalid");
-                    }
 
-                    if( currentSquare != null &&  _theGame.Player == currentSquare)
-                    {
-                        lineStringBuilder.Append("x|");
-                    } 
-                    else
-                    {
-                        lineStringBuilder.Append("_|");
-                    }
+                    lineStringBuilder.Append(GetRenderingCharcters(currentSquare));
+
+
 
                 }
 
@@ -94,6 +86,25 @@ namespace Minefield.Core.Tests.Unit
             }
 
             return $"{current}\n{gridStringBuilder.ToString()}";
+
+        }
+
+        private static string GetRenderingCharcters(Position currentSquare)
+        {
+            if (_theGame.Player.IsAt(currentSquare))
+            {
+                return "x|";
+            }
+
+            var positionIsLocationOfDetonatedMine = _theGame.Board.Mines.Any(x => { return x.IsAt(currentSquare) && (x.State == MineState.Detonated); });
+
+            if (positionIsLocationOfDetonatedMine)
+            {
+                return "! |";
+            }
+
+
+                return "_|";
 
         }
 
