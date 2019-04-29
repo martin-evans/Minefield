@@ -26,25 +26,73 @@ namespace Minefield.Core.Tests.Unit
 
         private static Game _theGame;
 
+
+        internal static string NewLine(int count)
+        {
+
+            var s = new StringBuilder();
+
+            for (int i = 0; i < count; i++)
+            {
+                s.Append("\n");
+            }
+
+
+            return s.ToString();
+
+        }
+
+
+        internal static string Tabs(int count)
+        {
+
+            var s = new StringBuilder();
+
+            for (int i = 0; i < count; i++)
+            {
+                s.Append("\t");
+            }
+
+
+            return s.ToString();
+
+        }
+
         internal static string Render(Game theGame)
         {
 
             _theGame = theGame;
 
-            var op = @" ".WithTopRow()
-                .WithActiveGrid()
+            var op = @" "
+            .WithHeader()           
+            .WithGridTopRow()
+                .WithGridBody()
                 .WithBottomRow();
 
             return op;
 
         }
 
-        private static string WithTopRow(this string current)
+        private static string WithHeader(this string current)
+        {
+            var s = new StringBuilder();
+
+            s.Append("\n  ");
+
+            s.AppendLine($"{Tabs(4)}!!! Mine Field !!!{NewLine(2)}");
+            s.AppendLine($"{Tabs(1)}Use the arrow keys to move your player (x) around the board. Watch out for mines!{NewLine(3)}");
+            s.AppendLine($"{Tabs(1)}Moves taken : {_theGame.Player.Score}\t\tLives Remaining : {_theGame.Player.Lives}{NewLine(3)}");
+            return $"{current}{s.ToString()}";
+        }
+
+
+
+        private static string WithGridTopRow(this string current)
         {
 
             var s = new StringBuilder();
 
-            s.Append("\n  ");
+            s.Append($"{NewLine(1)}{Tabs(4)}  ");
 
             for (var i = 0; i < _theGame.Board.Columns; i++)
             {
@@ -55,7 +103,7 @@ namespace Minefield.Core.Tests.Unit
 
         }
 
-        private static string WithActiveGrid(this string current)
+        private static string WithGridBody(this string current)
         {
 
             var gridStringBuilder = new StringBuilder();
@@ -65,7 +113,7 @@ namespace Minefield.Core.Tests.Unit
 
                 var lineStringBuilder = new StringBuilder();
 
-                lineStringBuilder.Append($"{row}|");
+                lineStringBuilder.Append($"{Tabs(4)}{row}|");
 
                 for (var col = 0; col < _theGame.Board.Columns; col++)
                 {
@@ -77,15 +125,13 @@ namespace Minefield.Core.Tests.Unit
 
                     lineStringBuilder.Append(GetRenderingCharcters(currentSquare));
 
-
-
                 }
 
                 gridStringBuilder.AppendLine(lineStringBuilder.ToString());
 
             }
 
-            return $"{current}\n{gridStringBuilder.ToString()}";
+            return $"{current}{NewLine(1)}{gridStringBuilder.ToString()}";
 
         }
 
@@ -103,8 +149,7 @@ namespace Minefield.Core.Tests.Unit
                 return "! |";
             }
 
-
-                return "_|";
+            return "_|";
 
         }
 
@@ -113,7 +158,7 @@ namespace Minefield.Core.Tests.Unit
 
             var s = new StringBuilder();
 
-            s.Append("  ");
+            s.Append($"{Tabs(4)}  ");
 
             foreach (var columnName in _theGame.Board.ColumnNames)
                 s.Append($"{columnName} ");

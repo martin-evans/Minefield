@@ -1,12 +1,15 @@
 
-namespace Minefield.Core {
-    public class Player : Position {
+namespace Minefield.Core
+{
+
+    public class Player : Position
+    {
 
         public int Lives { get; private set; }
 
         public int Score { get; private set; }
 
-        public Position Position { get { return this;} }
+        public Position Position { get { return this; } }
 
         public Player(int lives, Position at)
         {
@@ -17,14 +20,14 @@ namespace Minefield.Core {
 
         internal void IncrementMoveCount()
         {
-           Score++;
+            Score++;
         }
 
         internal void LoseALife()
         {
-            Lives = Lives-1;
+            Lives = Lives - 1;
         }
-        
+
     }
 
 }
