@@ -13,30 +13,24 @@ namespace Minefield.Core
 
         internal static string NewLine(int count)
         {
-
-            var s = new StringBuilder();
-
-            for (int i = 0; i < count; i++)
-            {
-                s.Append("\n");
-            }
-
-            return s.ToString();
-
+            return CharacterSeqence(count, "\n");
         }
 
         internal static string Tabs(int count)
         {
+            return CharacterSeqence(count, "\t");
+        }
 
-            var s = new StringBuilder();
+        private static string CharacterSeqence(int count, string characters)
+        {
+            var sb = new StringBuilder();
 
             for (int i = 0; i < count; i++)
             {
-                s.Append("\t");
+                sb.Append(characters);
             }
 
-
-            return s.ToString();
+            return sb.ToString();
 
         }
 
@@ -60,7 +54,7 @@ namespace Minefield.Core
         {
             var s = new StringBuilder();
             s.AppendLine($"{Tabs(4)}!!! Mine Field !!!{NewLine(LINE_SPACING)}");
-            s.AppendLine($"{Tabs(1)}Use the arrow keys to move your player (x) around the board.");
+            s.AppendLine($"{Tabs(1)}Use the arrow keys to move your player (x) across the board to column H");
             s.AppendLine($"{Tabs(1)}Watch out for mines!{NewLine(LINE_SPACING)}");
             s.AppendLine($"{Tabs(1)}Moves taken : {_theGame.Player.Score}{Tabs(4)}Lives Remaining : {_theGame.Player.Lives}{NewLine(LINE_SPACING)}");
             s.AppendLine($"{Tabs(3)}{_theGame.State.AsGamePlayMessage()}{NewLine(LINE_SPACING)}");
@@ -128,7 +122,15 @@ namespace Minefield.Core
 
             if (positionIsLocationOfDetonatedMine)
             {
-                return "!|";
+                return "*|";
+            }
+
+            if (_theGame.IsFinished())
+            {
+                var positionIsLocationOfUndetonatedDetonatedMine = _theGame.Board.Mines.Any(x => { return x.IsAt(currentSquare) && (x.State == MineState.Primed); });
+
+                if (positionIsLocationOfUndetonatedDetonatedMine)
+                    return "!|";
             }
 
             return "_|";
@@ -155,10 +157,10 @@ namespace Minefield.Core
             var s = new StringBuilder();
             s.AppendLine(NewLine(LINE_SPACING));
 
-            s.Append($"{Tabs(GRID_LEFT_MARGIN)}(R)estart\t\tE(x)it");
+            s.Append($"{Tabs(GRID_LEFT_MARGIN)}(R)estart");
 
             return $"{current}{s.ToString()}";
 
         }
-            }
+    }
 }

@@ -122,6 +122,11 @@ namespace Minefield.Core
             return State == GameState.Over;
         }
 
+        public bool IsFinished()
+        {
+            return IsOver() || IsWon();
+        }
+
         public bool PlayerIsAtStart()
         {
             return Player.IsAt(Board.StartPosition());
@@ -159,7 +164,7 @@ namespace Minefield.Core
                 handler(this, e);
             }
         }
-
+     
         private void Game_RaiseGameStateChangedEvent(object sender, GameStateChangedEventArgs e)
         {
             if (e.NewState == GameState.Over)
