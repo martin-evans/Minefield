@@ -55,7 +55,6 @@ namespace Minefield.Core
 
         private void InitialiseTheGame()
         {
-
             Board = new Board(strategy: _settings.MineLayingStrategy);
 
             Player = new Player(lives: _settings.NumberOfLives, at: Board.StartPosition());
@@ -69,11 +68,8 @@ namespace Minefield.Core
         public void MovePlayer(Direction? direction)
         {
 
-            if (IsOver() || IsWon())
-            {
+            if (IsFinished())
                 return;
-            }
-
 
             var position = Board.NewPositionRelativeTo(direction, from: Player);
 
