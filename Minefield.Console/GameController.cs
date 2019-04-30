@@ -15,33 +15,48 @@ namespace Minefield.Console
         {
             _theGame = theGame;
             _defaultColor = ForegroundColor;
+            CursorVisible = false;
 
             _theGame.RaiseGameStateChangedEvent += (sender, e) =>
             {
-                Clear();
-                ForegroundColor = ColorBasedOn(_theGame.State);
-
-                Write(GameUiRenderer.Render(_theGame));
-                Control(ReadKey());
-                Read();
+                ReinitialiseGameUi();
             };
-
 
             _theGame.RaiseMineExplodedEvent += (sender, e) =>
             {
-                Clear();
-                ForegroundColor = ColorBasedOn(_theGame.State);
-                Write(GameUiRenderer.Render(_theGame));
-
-                Thread.Sleep(800);
-
-                _theGame.ExplosionEnded();
+                ExplodeUi();
 
             };
 
             _theGame.Ready();
 
 
+        }
+
+        private void ExplodeUi()
+        {
+
+            Clear();
+
+            ForegroundColor = ColorBasedOn(_theGame.State);
+            Write(GameUiRenderer.Render(_theGame));
+
+            Thread.Sleep(800);
+
+            _theGame.ExplosionEnded();
+        }
+
+        private void ReinitialiseGameUi()
+        {
+            Clear();
+
+            ForegroundColor = ColorBasedOn(_theGame.State);
+
+            Write(GameUiRenderer.Render(_theGame));
+        
+            Control(ReadKey(true));
+
+            Read();
         }
 
         private ConsoleColor ColorBasedOn(GameState state)
@@ -64,10 +79,15 @@ namespace Minefield.Console
 
         public void Control(ConsoleKeyInfo keyInfo)
         {
-
+           
             if (keyInfo.Key == ConsoleKey.R)
             {
                 _theGame.Restart();
+            }
+                  
+            if(_theGame.IsOver() || _theGame.IsWon())
+            {
+                ReinitialiseGameUi();
             }
 
             if (keyInfo.Key == ConsoleKey.UpArrow)
@@ -89,6 +109,9 @@ namespace Minefield.Console
             {
                 _theGame.MovePlayer(Direction.Right);
             }
+
+
+            _theGame.MovePlayer(null);
 
         }
 

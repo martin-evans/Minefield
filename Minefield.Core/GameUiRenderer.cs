@@ -49,7 +49,8 @@ namespace Minefield.Core
             .WithHeader()
             .WithGridTopRow()
                 .WithGridBody()
-                .WithBottomRow();
+                .WithBottomRow()
+                .WithInstruction();
 
             return op;
 
@@ -60,7 +61,7 @@ namespace Minefield.Core
             var s = new StringBuilder();
             s.AppendLine($"{Tabs(4)}!!! Mine Field !!!{NewLine(LINE_SPACING)}");
             s.AppendLine($"{Tabs(1)}Use the arrow keys to move your player (x) around the board.");
-                s.AppendLine($"{Tabs(1)}Watch out for mines!{NewLine(LINE_SPACING)}");
+            s.AppendLine($"{Tabs(1)}Watch out for mines!{NewLine(LINE_SPACING)}");
             s.AppendLine($"{Tabs(1)}Moves taken : {_theGame.Player.Score}{Tabs(4)}Lives Remaining : {_theGame.Player.Lives}{NewLine(LINE_SPACING)}");
             s.AppendLine($"{Tabs(3)}{_theGame.State.AsGamePlayMessage()}{NewLine(LINE_SPACING)}");
 
@@ -148,5 +149,16 @@ namespace Minefield.Core
 
         }
 
-    }
+
+        private static string WithInstruction(this string current)
+        {
+            var s = new StringBuilder();
+            s.AppendLine(NewLine(LINE_SPACING));
+
+            s.Append($"{Tabs(GRID_LEFT_MARGIN)}(R)estart\t\tE(x)it");
+
+            return $"{current}{s.ToString()}";
+
+        }
+            }
 }

@@ -8,8 +8,9 @@ namespace Minefield.Console
 
         static void Main(string[] args)
         {
-            _ = new GameController(new Game());
 
+          _ = new GameController(new Game());    
+                 
         }
     }
 

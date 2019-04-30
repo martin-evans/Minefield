@@ -66,24 +66,32 @@ namespace Minefield.Core
             ProcessNewLocation();
         }
 
-        public void MovePlayer(Direction direction)
-        {       
+        public void MovePlayer(Direction? direction)
+        {
 
             if (IsOver() || IsWon())
+            {
                 return;
+            }
+
 
             var position = Board.NewPositionRelativeTo(direction, from: Player);
 
-            Player.MoveTo(position);
+            if (direction.HasValue)
+            {
 
-            Player.IncrementMoveCount();
+                Player.MoveTo(position);
+
+                Player.IncrementMoveCount();
+
+            }
 
             ProcessNewLocation();
         }
 
         private void ProcessNewLocation()
         {
-            var minedLocation = Board.Mines?.SingleOrDefault(x => x.ToString() == Player.Position.ToString());
+            var minedLocation = Board.Mines?.FirstOrDefault(x => x.ToString() == Player.Position.ToString());
 
             if (minedLocation != null && minedLocation.IsHidden())
             {
@@ -122,6 +130,7 @@ namespace Minefield.Core
         public void Restart()
         {
             InitialiseTheGame();
+            Ready();
         }
 
         public delegate void GameStateChangedEventArgsEventHandler(object sender, GameStateChangedEventArgs args);

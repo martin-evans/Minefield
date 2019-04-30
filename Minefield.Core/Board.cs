@@ -62,7 +62,12 @@ namespace Minefield.Core {
                 Right       := increment letter(col), same number(row)
          */
 
-        internal Position NewPositionRelativeTo (Direction direction, Position from) {
+        internal Position NewPositionRelativeTo (Direction? direction, Position from) {
+
+            if (direction == null)
+            {
+                return from;
+            }
 
             var currentRow = from.Row;
             var currentColumn = from.Column;
