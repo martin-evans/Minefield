@@ -53,8 +53,15 @@ namespace Minefield.Core.Tests.Unit
 
         }
 
-        /* Mines have been layed */
-         
+
+        [TestMethod]
+        public void The_GameIsReady()
+        {
+
+            Assert.AreEqual(GameState.Ready, _theGame.State);
+
+        }
+
 
     }
 

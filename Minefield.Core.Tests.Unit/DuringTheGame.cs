@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -36,9 +37,9 @@ namespace Minefield.Core.Tests.Unit
 
                 var shouldBeWon = (i == furthermostColumnIndex);
 
-                System.Console.WriteLine(_theGame.Player);
+                Console.WriteLine(_theGame.Player);
 
-                System.Console.WriteLine($"Should be won yet? {shouldBeWon}");
+                Console.WriteLine($"Should be won yet? {shouldBeWon}");
 
                 Assert.AreEqual(shouldBeWon, _theGame.GameHasBeenWon());
 
@@ -62,11 +63,56 @@ namespace Minefield.Core.Tests.Unit
 
             var theMine = _theGame.Board.Mines.Single(x => x.IsAt(_theGame.Player));
 
+
             Assert.AreEqual(MineState.Detonated, theMine.State);
 
             Assert.IsFalse(theMine.IsHidden());
 
             Assert.AreEqual(currentLives - 1, _theGame.Player.Lives);
+
+        }
+
+
+        [TestMethod]
+        public void WhenThePlayerWalksOnAnUnexplodedMine_TheGameStateChangesMomentarilyTo_ExplosionInProgress()
+        {
+
+            _theGame = new Game(GameSettings.UnexplodedMinesEverywhere());
+
+            var explosionOccurred = false;
+
+            var gameSetToReady = false;
+
+            EventHandler<GameStateChangedEventArgs> handleStateChange = (sender, args) =>
+            {
+                if (args.NewState == GameState.Boom)
+                {
+                    explosionOccurred = true;
+                }
+                if (args.NewState == GameState.Ready)
+                {
+                    gameSetToReady = true;
+                }
+
+            };
+
+
+            _theGame.RaiseGameStateChangedEvent += handleStateChange;
+
+
+
+            _theGame.MovePlayer(Direction.Right);
+
+            Assert.IsTrue(explosionOccurred);
+                  
+            Assert.IsTrue(gameSetToReady);
+
+
+
+
+            _theGame.RaiseGameStateChangedEvent -= handleStateChange;
+
+
 
         }
 
