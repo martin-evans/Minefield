@@ -1,31 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 
-namespace Minefield.Core.Tests.Unit
+namespace Minefield.Core
 {
     public static class GameUiRenderer
     {
 
-        /*
-
-         return @"
-          _ _ _ _ _ _ _ _
-        8|_|_|_|_|_|_|_|_|            
-        7|_|_|_|_|_|_|_|_|
-        6|_|_|_|_|_|_|_|_|
-        5|_|_|_|_|_|_|_|_|
-        4|_|_|_|_|_|_|_|_|
-        3|_|X|_|_|_|_|_|_|            
-        2|_|_|_|_|_|_|_|s|
-        1|_|_|_|_|_|_|_|s|
-          a b c d e f g h
-        ";
-
-         */
+        private const int GRID_LEFT_MARGIN = 3;
+        private const int LINE_SPACING = 1;
 
         private static Game _theGame;
-
 
         internal static string NewLine(int count)
         {
@@ -37,11 +21,9 @@ namespace Minefield.Core.Tests.Unit
                 s.Append("\n");
             }
 
-
             return s.ToString();
 
         }
-
 
         internal static string Tabs(int count)
         {
@@ -58,13 +40,13 @@ namespace Minefield.Core.Tests.Unit
 
         }
 
-        internal static string Render(Game theGame)
+        public static string Render(Game theGame)
         {
 
             _theGame = theGame;
 
             var op = @" "
-            .WithHeader()           
+            .WithHeader()
             .WithGridTopRow()
                 .WithGridBody()
                 .WithBottomRow();
@@ -76,15 +58,14 @@ namespace Minefield.Core.Tests.Unit
         private static string WithHeader(this string current)
         {
             var s = new StringBuilder();
+            s.AppendLine($"{Tabs(4)}!!! Mine Field !!!{NewLine(LINE_SPACING)}");
+            s.AppendLine($"{Tabs(1)}Use the arrow keys to move your player (x) around the board.");
+                s.AppendLine($"{Tabs(1)}Watch out for mines!{NewLine(LINE_SPACING)}");
+            s.AppendLine($"{Tabs(1)}Moves taken : {_theGame.Player.Score}{Tabs(4)}Lives Remaining : {_theGame.Player.Lives}{NewLine(LINE_SPACING)}");
+            s.AppendLine($"{Tabs(3)}{_theGame.State.AsGamePlayMessage()}{NewLine(LINE_SPACING)}");
 
-            s.Append("\n  ");
-
-            s.AppendLine($"{Tabs(4)}!!! Mine Field !!!{NewLine(2)}");
-            s.AppendLine($"{Tabs(1)}Use the arrow keys to move your player (x) around the board. Watch out for mines!{NewLine(3)}");
-            s.AppendLine($"{Tabs(1)}Moves taken : {_theGame.Player.Score}\t\tLives Remaining : {_theGame.Player.Lives}{NewLine(3)}");
             return $"{current}{s.ToString()}";
         }
-
 
 
         private static string WithGridTopRow(this string current)
@@ -92,7 +73,7 @@ namespace Minefield.Core.Tests.Unit
 
             var s = new StringBuilder();
 
-            s.Append($"{NewLine(1)}{Tabs(4)}  ");
+            s.Append($"{NewLine(LINE_SPACING)}{Tabs(GRID_LEFT_MARGIN)}  ");
 
             for (var i = 0; i < _theGame.Board.Columns; i++)
             {
@@ -113,7 +94,7 @@ namespace Minefield.Core.Tests.Unit
 
                 var lineStringBuilder = new StringBuilder();
 
-                lineStringBuilder.Append($"{Tabs(4)}{row}|");
+                lineStringBuilder.Append($"{Tabs(GRID_LEFT_MARGIN)}{row}|");
 
                 for (var col = 0; col < _theGame.Board.Columns; col++)
                 {
@@ -146,7 +127,7 @@ namespace Minefield.Core.Tests.Unit
 
             if (positionIsLocationOfDetonatedMine)
             {
-                return "! |";
+                return "!|";
             }
 
             return "_|";
@@ -158,7 +139,7 @@ namespace Minefield.Core.Tests.Unit
 
             var s = new StringBuilder();
 
-            s.Append($"{Tabs(4)}  ");
+            s.Append($"{Tabs(GRID_LEFT_MARGIN)}  ");
 
             foreach (var columnName in _theGame.Board.ColumnNames)
                 s.Append($"{columnName} ");

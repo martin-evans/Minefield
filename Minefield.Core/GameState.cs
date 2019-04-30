@@ -5,7 +5,6 @@
         Ready,
         Over,
         Won,
-        Boom
+        ExplosionInProgress
     }
-
 }

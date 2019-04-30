@@ -9,7 +9,7 @@ namespace Minefield.Core.Tests.Unit {
         [TestInitialize]
         public void SetUp () {
 
-            _theGame = new Core.Game ();
+            _theGame = new Game ();
         }
     }
 

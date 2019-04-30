@@ -7,8 +7,8 @@ namespace Minefield.Core
     {
         public void Lay(Board board)
         {
-            
-            board.Mines = board.Squares.ToList().Select(pos=> Mine.Lay(at:pos)).ToArray();
+            board.Mines = board.Squares.ToList().Select(pos => Mine.Lay(at: pos)).ToArray();
         }
     }
+
 }

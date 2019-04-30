@@ -75,7 +75,7 @@ namespace Minefield.Core {
 
             switch (direction) {
                 case Direction.Up:
-                    if (currentRow <= boardWidth) {
+                    if (currentRow < boardWidth) {
                         newRow = currentRow + 1;
                     }
                     break;

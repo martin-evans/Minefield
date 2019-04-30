@@ -1,9 +1,0 @@
-/Users/martinevans/Projects/Minefield/Minefield.Core/bin/Debug/netstandard2.0/Minefield.Core.deps.json
-/Users/martinevans/Projects/Minefield/Minefield.Core/bin/Debug/netstandard2.0/Minefield.Core.dll
-/Users/martinevans/Projects/Minefield/Minefield.Core/bin/Debug/netstandard2.0/Minefield.Core.pdb
-/Users/martinevans/Projects/Minefield/Minefield.Core/obj/Debug/netstandard2.0/Minefield.Core.csprojAssemblyReference.cache
-/Users/martinevans/Projects/Minefield/Minefield.Core/obj/Debug/netstandard2.0/Minefield.Core.csproj.CoreCompileInputs.cache
-/Users/martinevans/Projects/Minefield/Minefield.Core/obj/Debug/netstandard2.0/Minefield.Core.AssemblyInfoInputs.cache
-/Users/martinevans/Projects/Minefield/Minefield.Core/obj/Debug/netstandard2.0/Minefield.Core.AssemblyInfo.cs
-/Users/martinevans/Projects/Minefield/Minefield.Core/obj/Debug/netstandard2.0/Minefield.Core.dll
-/Users/martinevans/Projects/Minefield/Minefield.Core/obj/Debug/netstandard2.0/Minefield.Core.pdb

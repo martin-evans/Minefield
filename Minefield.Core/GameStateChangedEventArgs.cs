@@ -7,4 +7,9 @@ namespace Minefield.Core
         public GameState NewState { get; set; }
     }
 
+    public class MineExplodedEventArgs : EventArgs
+    {
+        public Position MinePosition { get; set; }
+
+    }
 }

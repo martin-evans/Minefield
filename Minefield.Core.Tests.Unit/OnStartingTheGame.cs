@@ -16,6 +16,8 @@ namespace Minefield.Core.Tests.Unit
         [TestMethod]
         public void MinesHave_Been_HiddenOnTheBoard()
         {
+            _theGame = new Game(GameSettings.Default());
+
             foreach (var mine in _theGame.Board.Mines)
             {
                 Assert.IsTrue(mine.IsHidden());

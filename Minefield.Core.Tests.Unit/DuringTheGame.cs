@@ -30,6 +30,8 @@ namespace Minefield.Core.Tests.Unit
         public void WhenThePlayerReachesTheEndOfTheBoard_TheGameIsWon()
         {
 
+            _theGame = new Game(GameSettings.TestSettings_NoMines());
+
             var furthermostColumnIndex = _theGame.Board.Columns - 1;
 
             for (var i = 0; i <= furthermostColumnIndex; i++)
@@ -41,7 +43,7 @@ namespace Minefield.Core.Tests.Unit
 
                 Console.WriteLine($"Should be won yet? {shouldBeWon}");
 
-                Assert.AreEqual(shouldBeWon, _theGame.GameHasBeenWon());
+                Assert.AreEqual(shouldBeWon, _theGame.IsWon());
 
                 if (!shouldBeWon)
                 {
@@ -50,12 +52,34 @@ namespace Minefield.Core.Tests.Unit
             }
         }
 
+        [TestMethod] 
+        public void WhenTheGameIsOver_PlayerCannotMoveAgain()
+        {
+
+            var statesThatsHouldNotAllowFurtherMovement = new[] { GameState.Over, GameState.Won };
+
+            foreach(var testState in statesThatsHouldNotAllowFurtherMovement)
+            {
+
+                _theGame = new Game(GameSettings.TestSettings_NoMines(state: testState));
+
+                _theGame.MovePlayer(Direction.Right);
+                _theGame.MovePlayer(Direction.Right);
+                _theGame.MovePlayer(Direction.Right);
+
+                Assert.IsTrue(_theGame.PlayerIsAtStart(), $"Additional moves allowed  during Gamestate {testState}");
+
+            }
+
+        }
+
+
         [TestMethod]
         public void WhenThePlayerWalksOnAnUnexplodedMine_TheMineDetonates_And_ThePlayerLoosesALife()
         {
 
             // player moving anywhere will stand on a mine       
-            _theGame = new Game(GameSettings.UnexplodedMinesEverywhere());
+            _theGame = new Game(GameSettings.TestSettings_UnexplodedMinesEverywhere());
 
             var currentLives = _theGame.Player.Lives;
 
@@ -74,21 +98,45 @@ namespace Minefield.Core.Tests.Unit
 
 
         [TestMethod]
-        public void WhenThePlayerWalksOnAnUnexplodedMine_TheGameStateChangesMomentarilyTo_ExplosionInProgress()
+        public void WhenThePlayerWalksOnAnUnexplodedMine_TheMineExplodes()
         {
 
-            _theGame = new Game(GameSettings.UnexplodedMinesEverywhere());
+            _theGame = new Game(GameSettings.TestSettings_UnexplodedMinesEverywhere());
 
             var explosionOccurred = false;
 
+
+            EventHandler<MineExplodedEventArgs> handleStateChange = (sender, args) =>
+            {
+                explosionOccurred = true;
+                _theGame.ExplosionEnded();
+            };
+
+
+            _theGame.RaiseMineExplodedEvent += handleStateChange;
+
+
+            _theGame.MovePlayer(Direction.Right);
+
+            Assert.IsTrue(explosionOccurred);
+
+
+            _theGame.RaiseMineExplodedEvent -= handleStateChange;
+
+
+        }
+
+
+        [TestMethod]
+        public void AfterTherPlayerMoves_IfTheGameHasntEnded_ThePlayerMayMoveAgain()
+        {
+
+            _theGame = new Game(GameSettings.TestSettings_NoMines());
+                       
             var gameSetToReady = false;
 
             EventHandler<GameStateChangedEventArgs> handleStateChange = (sender, args) =>
             {
-                if (args.NewState == GameState.Boom)
-                {
-                    explosionOccurred = true;
-                }
                 if (args.NewState == GameState.Ready)
                 {
                     gameSetToReady = true;
@@ -99,30 +147,21 @@ namespace Minefield.Core.Tests.Unit
 
             _theGame.RaiseGameStateChangedEvent += handleStateChange;
 
-
-
             _theGame.MovePlayer(Direction.Right);
 
-            Assert.IsTrue(explosionOccurred);
-                  
             Assert.IsTrue(gameSetToReady);
-
-
-
 
             _theGame.RaiseGameStateChangedEvent -= handleStateChange;
 
 
-
         }
-
 
         [TestMethod]
         public void WhenThePlayerWalksOnAnExplodedMine_TheMineDoesNothing_And_ThePlayerDoesNotLosesAnyMoreLives()
         {
 
             // player moving anywhere will stand on a mine       
-            _theGame = new Game(GameSettings.UnexplodedMinesEverywhere());
+            _theGame = new Game(GameSettings.TestSettings_UnexplodedMinesEverywhere());
 
             var currentLives = _theGame.Player.Lives;
 
@@ -133,13 +172,21 @@ namespace Minefield.Core.Tests.Unit
         }
 
 
-
         [TestMethod]
         public void WhenThePlayerLoosesAllLives_TheGameIsOver()
         {
 
             // player moving anywhere will stand on a mine            
-            _theGame = new Game(GameSettings.UnexplodedMinesEverywhere(lives: 1));
+            _theGame = new Game(GameSettings.TestSettings_UnexplodedMinesEverywhere(lives: 1));
+
+
+            EventHandler<MineExplodedEventArgs> handleStateChange = (sender, args) =>
+            {
+                _theGame.ExplosionEnded();
+            };
+
+
+            _theGame.RaiseMineExplodedEvent += handleStateChange;
 
             _theGame.MovePlayer(Direction.Right);
 
@@ -174,7 +221,7 @@ namespace Minefield.Core.Tests.Unit
         {
 
             // player moving anywhere will stand on a mine            
-            _theGame = new Game(GameSettings.UnexplodedMinesEverywhere());
+            _theGame = new Game(GameSettings.TestSettings_UnexplodedMinesEverywhere());
 
             _theGame.MovePlayer(Direction.Right);
 

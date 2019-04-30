@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 
 namespace Minefield.Core
 {
     public class Game
-    {        
+    {
 
         public Board Board { get; set; }
 
         public Player Player { get; set; }
-
 
         private GameState _state;
 
@@ -20,7 +18,9 @@ namespace Minefield.Core
             private set
             {
                 _state = value;
-                OnGameStateChanged(new GameStateChangedEventArgs { NewState = value });
+
+                if(value != GameState.ExplosionInProgress)
+                    OnGameStateChanged(new GameStateChangedEventArgs { NewState = value });
             }
         }
 
@@ -36,10 +36,21 @@ namespace Minefield.Core
 
             _settings = settings;
 
-
-
             InitialiseTheGame();
 
+            RaiseGameStateChangedEvent += Game_RaiseGameStateChangedEvent;
+            RaiseMineExplodedEvent += Game_RaiseMineExplodedEvent;
+
+            if (_settings.State.HasValue)
+            {
+                State = _settings.State.Value;
+            }
+
+        }
+
+        public void Ready()
+        {
+            State = GameState.Ready;
         }
 
         private void InitialiseTheGame()
@@ -48,37 +59,17 @@ namespace Minefield.Core
             Board = new Board(strategy: _settings.MineLayingStrategy);
 
             Player = new Player(lives: _settings.NumberOfLives, at: Board.StartPosition());
-            RaiseGameStateChangedEvent += Game_RaiseGameStateChangedEvent;;
-
-
         }
 
-        void Game_RaiseGameStateChangedEvent(object sender, GameStateChangedEventArgs e)
+        public void ExplosionEnded()
         {
-            Console.WriteLine(e.NewState);
-
-            if (e.NewState == GameState.Boom)
-            {
-                Thread.Sleep(_settings.ExplosionLengthMs);
-
-                Player.LoseALife();
-
-                if (Player.Lives == 0)
-                {
-                    State = GameState.Over;
-                }
-                else
-                {
-                    State = GameState.Ready;
-                }
-            }
+            ProcessNewLocation();
         }
-
 
         public void MovePlayer(Direction direction)
-        {
+        {       
 
-            if (IsOver())
+            if (IsOver() || IsWon())
                 return;
 
             var position = Board.NewPositionRelativeTo(direction, from: Player);
@@ -87,26 +78,35 @@ namespace Minefield.Core
 
             Player.IncrementMoveCount();
 
-            var suspectLocation = SuspectLocation();
+            ProcessNewLocation();
+        }
 
-            if (suspectLocation != null && suspectLocation.IsHidden())
+        private void ProcessNewLocation()
+        {
+            var minedLocation = Board.Mines?.SingleOrDefault(x => x.ToString() == Player.Position.ToString());
+
+            if (minedLocation != null && minedLocation.IsHidden())
             {
-                State = GameState.Boom;
-                suspectLocation.Boom();      
+                minedLocation.Boom();
+                OnMineExploded(new MineExplodedEventArgs { MinePosition = minedLocation });
+                return;
             }
 
-            // If player reached the other side.. handle here.
+            var playerIsAtEndOfBoard = (Player.Column == Board.ColumnNames.ToArray()[Board.Columns - 1]);
+
+            if (playerIsAtEndOfBoard)
+            {
+                State = GameState.Won;
+            }
+            else
+            {
+                State = GameState.Ready;
+            }
         }
 
-
-        private Mine SuspectLocation()
+        public bool IsWon()
         {
-            return Board.Mines.SingleOrDefault(x => x.ToString() == Player.Position.ToString());
-        }
-
-        public bool GameHasBeenWon()
-        {
-            return Player.Column == Board.ColumnNames.ToArray()[Board.Columns - 1];
+            return State == GameState.Won;;
         }
 
         public bool IsOver()
@@ -128,6 +128,8 @@ namespace Minefield.Core
 
         public event EventHandler<GameStateChangedEventArgs> RaiseGameStateChangedEvent;
 
+        public event EventHandler<MineExplodedEventArgs> RaiseMineExplodedEvent;
+
         protected virtual void OnGameStateChanged(GameStateChangedEventArgs e)
         {
 
@@ -139,23 +141,35 @@ namespace Minefield.Core
             }
         }
 
-      
+        protected virtual void OnMineExploded(MineExplodedEventArgs e)
+        {
+            EventHandler<MineExplodedEventArgs> handler = RaiseMineExplodedEvent;
 
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
 
-    }
+        private void Game_RaiseGameStateChangedEvent(object sender, GameStateChangedEventArgs e)
+        {
+            if (e.NewState == GameState.Over)
+            {
+                return;
+            }
 
-    public class GameStateChangedEventArgs : EventArgs
-    {
-        public GameState NewState { get; set; }
-    }
+            if (e.NewState == GameState.Ready && Player.Lives == 0)
+            {
+                State = GameState.Over;
+            }
+                 
+        }
 
-
-    public enum GameState
-    {
-        Ready,
-        Over,
-        Won,
-        Boom
+        private void Game_RaiseMineExplodedEvent(object sender, MineExplodedEventArgs e)
+        {
+            State = GameState.ExplosionInProgress;
+            Player.LoseALife();                       
+        }
     }
 
 }
