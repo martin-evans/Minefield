@@ -8,8 +8,8 @@ namespace Minefield.Console
     public class GameController
     {
 
-        private ConsoleColor _defaultColor;
-        private readonly Game _theGame;
+        private readonly ConsoleColor _defaultColor;
+        private readonly Game         _theGame;
 
         public GameController(Game theGame)
         {

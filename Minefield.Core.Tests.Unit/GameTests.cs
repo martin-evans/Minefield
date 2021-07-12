@@ -4,12 +4,12 @@ namespace Minefield.Core.Tests.Unit {
 
     public abstract class GameTests {
 
-        protected Game _theGame;
+        protected Game TheGame;
 
         [TestInitialize]
         public void SetUp () {
 
-            _theGame = new Game ();
+            TheGame = new Game ();
         }
     }
 

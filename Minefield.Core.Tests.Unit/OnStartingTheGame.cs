@@ -9,16 +9,16 @@ namespace Minefield.Core.Tests.Unit
         [TestMethod]
         public void A_Board_Exists_Of_8x8()
         {            
-            Assert.AreEqual(8, _theGame.Board.Rows);
-            Assert.AreEqual(8, _theGame.Board.Columns);
+            Assert.AreEqual(8, TheGame.Board.Rows);
+            Assert.AreEqual(8, TheGame.Board.Columns);
         }
 
         [TestMethod]
         public void MinesHave_Been_HiddenOnTheBoard()
         {
-            _theGame = new Game(GameSettings.Default());
+            TheGame = new Game(GameSettings.Default());
 
-            foreach (var mine in _theGame.Board.Mines)
+            foreach (var mine in TheGame.Board.Mines)
             {
                 Assert.IsTrue(mine.IsHidden());
             }
@@ -30,13 +30,13 @@ namespace Minefield.Core.Tests.Unit
         public void A_PlayerExists()
         {
 
-            Assert.IsNotNull(_theGame.Player);            
+            Assert.IsNotNull(TheGame.Player);            
         }
 
         [TestMethod]
         public void The_Player_IsLocatedAtTheStartPosition_OnTheBoard()
         {
-            Assert.IsTrue(_theGame.Player.IsAt( _theGame.Board.StartPosition()));
+            Assert.IsTrue(TheGame.Player.IsAt( TheGame.Board.StartPosition()));
 
         }
 
@@ -44,14 +44,14 @@ namespace Minefield.Core.Tests.Unit
         [TestMethod]
         public void The_Player_HasThreeLives() {
 
-            Assert.AreEqual(3, _theGame.Player.Lives);
+            Assert.AreEqual(3, TheGame.Player.Lives);
 
         }
 
         [TestMethod]
         public void The_Player_HasAScoreOf_Zero() {
 
-            Assert.AreEqual(0, _theGame.Player.Score);
+            Assert.AreEqual(0, TheGame.Player.Score);
 
         }
 
@@ -60,7 +60,7 @@ namespace Minefield.Core.Tests.Unit
         public void The_GameIsReady()
         {
 
-            Assert.AreEqual(GameState.Ready, _theGame.State);
+            Assert.AreEqual(GameState.Ready, TheGame.State);
 
         }
 

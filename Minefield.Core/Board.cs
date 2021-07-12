@@ -5,8 +5,8 @@ using System.Linq;
 namespace Minefield.Core {
     public class Board {
 
-        public int Rows { get { return Squares.GroupBy (X => X.Row).ToList ().Count; } }
-        public int Columns { get { return Squares.GroupBy (X => X.Column).ToList ().Count; } }
+        public int Rows { get { return Squares.GroupBy (x => x.Row).ToList ().Count; } }
+        public int Columns { get { return Squares.GroupBy (x => x.Column).ToList ().Count; } }
 
         public Position[] Squares { get; set; }
 
@@ -34,7 +34,7 @@ namespace Minefield.Core {
             ColumnNames
                 .ForEach (x => {
                     for (var i = 1; i <= ColumnNames.Count; i++) {
-                        lst.Add (new Core.Position () { Column = x.ToUpper (), Row = i });
+                        lst.Add (new Position () { Column = x.ToUpper (), Row = i });
                     }
                 });
 

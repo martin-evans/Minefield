@@ -7,9 +7,9 @@ namespace Minefield.Core.Tests.Unit
     public class GameUiRendering : GameTests {
 
         [TestMethod]
-        public void RenderingGameState_DIsplaysBoardOnScreen () {
+        public void RenderingGameState_DisplaysBoardOnScreen () {
 
-            var op = GameUiRenderer.Render (_theGame);
+            var op = GameUiRenderer.Render (TheGame);
 
             Console.WriteLine (op);
 

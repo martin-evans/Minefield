@@ -13,7 +13,6 @@ namespace Minefield.Core
 
         public override string ToString()
         {
-
             return $"{Column}{Row}";
         }
     }

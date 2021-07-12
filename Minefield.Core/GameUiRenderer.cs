@@ -13,19 +13,19 @@ namespace Minefield.Core
 
         internal static string NewLine(int count)
         {
-            return CharacterSeqence(count, "\n");
+            return CharacterSequence(count, "\n");
         }
 
         internal static string Tabs(int count)
         {
-            return CharacterSeqence(count, "\t");
+            return CharacterSequence(count, "\t");
         }
 
-        private static string CharacterSeqence(int count, string characters)
+        private static string CharacterSequence(int count, string characters)
         {
             var sb = new StringBuilder();
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 sb.Append(characters);
             }
@@ -59,7 +59,7 @@ namespace Minefield.Core
             s.AppendLine($"{Tabs(1)}Moves taken : {_theGame.Player.Score}{Tabs(4)}Lives Remaining : {_theGame.Player.Lives}{NewLine(LINE_SPACING)}");
             s.AppendLine($"{Tabs(3)}{_theGame.State.AsGamePlayMessage()}{NewLine(LINE_SPACING)}");
 
-            return $"{current}{s.ToString()}";
+            return $"{current}{s}";
         }
 
 
@@ -99,7 +99,7 @@ namespace Minefield.Core
                     var currentSquare = _theGame.Board.Squares.SingleOrDefault(x => x.Column == colName && x.Row == row);
 
 
-                    lineStringBuilder.Append(GetRenderingCharcters(currentSquare));
+                    lineStringBuilder.Append(GetRenderingCharacters(currentSquare));
 
                 }
 
@@ -111,14 +111,14 @@ namespace Minefield.Core
 
         }
 
-        private static string GetRenderingCharcters(Position currentSquare)
+        private static string GetRenderingCharacters(Position currentSquare)
         {
             if (_theGame.Player.IsAt(currentSquare))
             {
                 return "x|";
             }
 
-            var positionIsLocationOfDetonatedMine = _theGame.Board.Mines.Any(x => { return x.IsAt(currentSquare) && (x.State == MineState.Detonated); });
+            var positionIsLocationOfDetonatedMine = _theGame.Board.Mines.Any(x => x.IsAt(currentSquare) && x.State == MineState.Detonated);
 
             if (positionIsLocationOfDetonatedMine)
             {
@@ -127,7 +127,7 @@ namespace Minefield.Core
 
             if (_theGame.IsFinished())
             {
-                var positionIsLocationOfUndetonatedDetonatedMine = _theGame.Board.Mines.Any(x => { return x.IsAt(currentSquare) && (x.State == MineState.Primed); });
+                var positionIsLocationOfUndetonatedDetonatedMine = _theGame.Board.Mines.Any(x => x.IsAt(currentSquare) && x.State == MineState.Primed);
 
                 if (positionIsLocationOfUndetonatedDetonatedMine)
                     return "!|";
@@ -147,7 +147,7 @@ namespace Minefield.Core
             foreach (var columnName in _theGame.Board.ColumnNames)
                 s.Append($"{columnName} ");
 
-            return $"{current}{s.ToString()}";
+            return $"{current}{s}";
 
         }
 
@@ -159,7 +159,7 @@ namespace Minefield.Core
 
             s.Append($"{Tabs(GRID_LEFT_MARGIN)}(R)estart");
 
-            return $"{current}{s.ToString()}";
+            return $"{current}{s}";
 
         }
     }

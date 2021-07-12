@@ -10,11 +10,11 @@ namespace Minefield.Core.Tests.Unit
         public void The_Player_MayMoveAround_TheBoard()
         {    
 
-            var currentPlayerPosition = _theGame.Player.Position.ToString();
+            var currentPlayerPosition = TheGame.Player.Position.ToString();
 
-            _theGame.MovePlayer(Direction.Right);
+            TheGame.MovePlayer(Direction.Right);
 
-            var newPlayerPosition = _theGame.Player.Position.ToString();
+            var newPlayerPosition = TheGame.Player.Position.ToString();
 
             Assert.AreNotEqual(currentPlayerPosition, newPlayerPosition);
 
@@ -24,14 +24,14 @@ namespace Minefield.Core.Tests.Unit
         public void Attempting_AnInvalidMove_WillBeIgnored()
         {
 
-            var currentPlayerPosition = _theGame.Player.Position;
+            var currentPlayerPosition = TheGame.Player.Position;
 
-            Assert.IsTrue(currentPlayerPosition.IsAt(_theGame.Board.StartPosition()));
+            Assert.IsTrue(currentPlayerPosition.IsAt(TheGame.Board.StartPosition()));
 
             // illegal move when at A1
-            _theGame.MovePlayer(Direction.Down);
+            TheGame.MovePlayer(Direction.Down);
 
-            var newPlayerPosition = _theGame.Player.Position;
+            var newPlayerPosition = TheGame.Player.Position;
 
             Assert.AreSame(currentPlayerPosition, newPlayerPosition);
 
