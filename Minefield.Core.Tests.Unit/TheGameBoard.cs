@@ -27,14 +27,4 @@ namespace Minefield.Core.Tests.Unit
             }
         }
     }
-    
-    [TestClass]
-    public class BreakingTest
-    {
-        [TestMethod]
-        public void Foo()
-        {
-            Assert.AreEqual(1 ==2, "This test was expected to fail");
-        }
-    }
 }
