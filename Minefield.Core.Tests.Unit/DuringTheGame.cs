@@ -236,8 +236,9 @@ namespace Minefield.Core.Tests.Unit
             Assert.IsTrue(TheGame.PlayerIsAtStart());
 
             Assert.AreEqual(0, TheGame.Player.Score);
-
-
+            
+            Assert.AreEqual(0, 0);
+            
         }
 
     }
